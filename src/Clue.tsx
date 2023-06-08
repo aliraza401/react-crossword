@@ -65,7 +65,7 @@ export default function Clue({
       onClick={handleClick}
       aria-label={`clue-${number}-${direction}`}
     >
-      {number}: {children}
+      {children}
     </ClueWrapper>
   );
 }

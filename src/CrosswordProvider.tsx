@@ -269,6 +269,8 @@ export type CrosswordProviderProps = EnhancedProps<
      * callback function called when a clue is selected
      */
     onClueSelected?: (direction: Direction, number: string) => void;
+
+    RenderButtons?: any;
   }
 >;
 

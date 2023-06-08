@@ -55,7 +55,7 @@ const CluesWrapper = styled.div.attrs((/* props */) => ({
     }
 
     div {
-      margin-top: 0.5em;
+      margin-top: 0;
     }
   }
 `;
@@ -88,7 +88,7 @@ export type CrosswordImperative = CrosswordProviderImperative;
  * functionality.
  */
 const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
-  ({ acrossLabel, downLabel, ...props }, ref) => {
+  ({ acrossLabel, downLabel, RenderButtons, ...props }, ref) => {
     const providerRef = useRef<CrosswordProviderImperative>(null);
 
     // expose some imperative methods
@@ -134,6 +134,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       <CrosswordProvider {...props} ref={providerRef}>
         <CrosswordGrid />
         <CluesWrapper>
+          {!!RenderButtons && <RenderButtons />}
           <DirectionClues direction="across" label={acrossLabel} />
           <DirectionClues direction="down" label={downLabel} />
         </CluesWrapper>

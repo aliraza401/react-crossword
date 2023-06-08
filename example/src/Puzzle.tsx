@@ -19,6 +19,12 @@ const data = {
       row: 0,
       col: 0,
     },
+    2: {
+      clue: 'one plus one',
+      answer: 'TWO',
+      row: 1,
+      col: 0,
+    },
   },
   down: {
     2: {
@@ -306,25 +312,10 @@ const CrosswordProviderWrapper = styled(CrosswordWrapper)`
   }
 `;
 
-const IpuzWrapper = styled(CrosswordProviderWrapper)`
-  max-width: 100%;
-  .direction {
-    width: 25em;
-  }
-`;
-
-const Messages = styled.pre`
-  flex: auto;
-  background-color: rgb(230, 230, 230);
-  margin: 0;
-  padding: 1em;
-  overflow: auto;
-`;
-
 // in order to make this a more-comprehensive example, and to vet Crossword's
 // features, we actually implement a fair amount...
 
-function App() {
+function Puzzle() {
   const crossword = useRef<CrosswordImperative>(null);
 
   const focus = useCallback<React.MouseEventHandler>((event) => {
@@ -508,23 +499,58 @@ function App() {
 
   const fromIpuz = useIpuz(ipuzData);
 
+  // My Code
+  const ControlButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+  `;
+
+  const ControlButton = styled.button`
+    padding: 5px 10px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #f8f8f8;
+    }
+
+    &:active {
+      background-color: #e8e8e8;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  `;
+
+  const onSubmit = () => {
+    crossword.current?.isCrosswordCorrect()
+      ? console.log('Yes')
+      : console.log('No');
+  };
+
+  const onReset = () => {
+    crossword.current?.reset();
+  };
+
+  const [isSavedForLater, setIsSavedForLater] = React.useState(true);
+
   return (
     <Page>
-      <Header>@jaredreisinger/react-crossword example app</Header>
-
-      <p>
-        This is a demo app that makes use of the @jaredreisinger/react-crossword
-        component. It exercises most of the functionality, so that you can see
-        how to do so.
-      </p>
-
+      <Header>react-crossword example</Header>
+      {/* 
       <Commands>
         <Command onClick={focus}>Focus</Command>
         <Command onClick={fillOneCell}>Fill the first letter of 2-down</Command>
         <Command onClick={fillAllAnswers}>Fill all answers</Command>
         <Command onClick={reset}>Reset</Command>
         <Command onClick={clearMessages}>Clear messages</Command>
-      </Commands>
+      </Commands> */}
 
       <CrosswordMessageBlock>
         <CrosswordWrapper>
@@ -536,6 +562,18 @@ function App() {
             onLoadedCorrect={onLoadedCorrect}
             onCrosswordCorrect={onCrosswordCorrect}
             onCellChange={onCellChange}
+            useStorage={isSavedForLater}
+            // RenderButtons={() => (
+            //   <ControlButtonWrapper>
+            //     {/* <ControlButton
+            //       onClick={() => setIsSavedForLater(!isSavedForLater)}
+            //     >
+            //       {isSavedForLater ? 'Disable Saving' : 'Save for later'}
+            //     </ControlButton> */}
+            //     <ControlButton onClick={onReset}>Reset</ControlButton>
+            //     <ControlButton onClick={onSubmit}>Submit</ControlButton>
+            //   </ControlButtonWrapper>
+            // )}
           />
         </CrosswordWrapper>
 
@@ -627,4 +665,4 @@ function App() {
   );
 }
 
-export default App;
+export default Puzzle;
